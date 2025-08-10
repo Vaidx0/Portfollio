@@ -9,6 +9,31 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--green-primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 20px rgba(50, 205, 50, 0.5);
+        }
+
+        .cursor.hover {
+            transform: scale(1.5);
+            background: var(--green-light);
+            box-shadow: 0 0 30px rgba(50, 205, 50, 0.8);
+        }
+
+        .cursor.click {
+            transform: scale(0.8);
+            background: var(--green-dark);
         }
 
         :root {
@@ -406,6 +431,14 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .cursor {
+                display: none;
+            }
+            
+            * {
+                cursor: auto !important;
+            }
+
             .nav-links {
                 display: none;
             }
@@ -602,6 +635,9 @@
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
     <!-- Header -->
     <header class="header">
         <nav class="nav container">
@@ -635,12 +671,15 @@
             <div class="about-content">
                 <div class="about-text">
                     <h2><span class="flag">🇫🇷</span> À propos de moi</h2>
-                    <p>Bonjour ! Je suis <strong>Amaury</strong>, un freelance français spécialisé en cybersécurité, motivé et passionné par le travail bien fait. Le français est ma langue maternelle, mais je comprends et parle très bien l'anglais, ce qui me permet de travailler efficacement avec des clients du monde entier.</p>
-                    <p><strong>🔒 Ma spécialité :</strong> Expert en cybersécurité, j'aide les entreprises et particuliers à protéger leurs données et systèmes informatiques contre les menaces numériques.</p>
+                    <p>Bonjour ! Je suis <strong>Amaury</strong>, un freelance français motivé et passionné par le travail bien fait. Le français est ma langue maternelle, mais je comprends et parle très bien l'anglais, ce qui me permet de travailler efficacement avec des clients du monde entier.</p>
                     <p><strong>🎯 Mon objectif :</strong> Offrir un travail soigné, précis et livré dans les délais, tout en assurant une communication fluide et professionnelle. La satisfaction de mes clients est toujours ma priorité.</p>
                     <p><strong>💳 Paiement sécurisé :</strong> J'accepte uniquement les paiements via PayPal pour garantir la sécurité de nos transactions.</p>
                 </div>
                 <div class="skills-grid">
+                    <div class="skill-item">
+                        <h3>🔒 Cybersécurité</h3>
+                        <p>Compétence sécurité</p>
+                    </div>
                     <div class="skill-item">
                         <h3>🇫🇷 Français Natif</h3>
                         <p>Langue maternelle</p>
@@ -648,10 +687,6 @@
                     <div class="skill-item">
                         <h3>🇬🇧 Anglais Fluide</h3>
                         <p>Communication internationale</p>
-                    </div>
-                    <div class="skill-item">
-                        <h3>⚡ Livraisons Rapides</h3>
-                        <p>Respect des délais</p>
                     </div>
                     <div class="skill-item">
                         <h3>💳 PayPal Accepté</h3>
@@ -719,6 +754,50 @@
     </footer>
 
     <script>
+        // Custom cursor functionality
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+
+        // Update cursor position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX - 10 + 'px';
+            cursor.style.top = mouseY - 10 + 'px';
+        });
+
+        // Hover effects on interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .service-card, .skill-item, .logo');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // Click effect
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('click');
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('click');
+        });
+
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
+
         // Mobile menu toggle
         function toggleMobileMenu() {
             const navLinks = document.querySelector('.nav-links');
